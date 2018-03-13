@@ -2,7 +2,7 @@
 GitLab UserScripts to enhance usability:
   - Issues board Swimlanes
   
-The scripts can be auto-loaded with [Tampermonkey](http://tampermonkey.net/) browser addon, or equivalent.
+The scripts can be auto-loaded with [Tampermonkey](http://tampermonkey.net/) browser addon, or equivalent, by clicking the *Raw* button on any `.user.js` file in the repository.
 
 ### gitlab-swimlanes
 #### Description

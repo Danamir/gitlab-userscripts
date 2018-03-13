@@ -82,11 +82,15 @@ function update_boards(swimlanes) {
             show_swimlane(id, swimlane_animate);
         }
 
-        $(id+'_title').on("click", function () {
-            if($(id+'_title i').hasClass('fa-caret-down')) {
-                hide_swimlane(id, swimlane_animate);
+        $(id+'_title').on("click", function (e) {
+            if (e && e.shiftKey) {
+
             } else {
-                show_swimlane(id, swimlane_animate);
+                if($(id+'_title i').hasClass('fa-caret-down')) {
+                    hide_swimlane(id, swimlane_animate);
+                } else {
+                    show_swimlane(id, swimlane_animate);
+                }
             }
 
         });
@@ -328,6 +332,9 @@ function display_swimlanes() {
             }
 
             current_board.first().prepend('<'+swimlane_tag+' class="board-inner" id="'+swimlane_id(current_swimlane_title)+'_title" style="cursor: pointer; font-size: '+swimlane_font_size+'; padding: 6px;"><i aria-hidden="true" class="fa fa-fw fa-caret-down"></i>'+title+item+'</'+swimlane_tag+'>');
+            $(swimlane_tag, current_board).first().addClass("has-tooltip");
+            $(swimlane_tag, current_board).first().attr("data-html", "true");
+            $(swimlane_tag, current_board).first().attr("title", 'Toggle '+title+'<br><span style="font-size: 0.85em;">Shift : close others</span>');
 
             swimlanes[current_swimlane_title] = current_board;
         }
@@ -367,7 +374,8 @@ $(document).ready(function() {
         var btn = $('.board-extra-actions button:first-child').clone();
         btn.addClass("btn-display-swimlanes has-tooltip");
         btn.attr("data-toggle", "button");
-        btn.attr("title", "Toggle swimlanes");
+        btn.attr("data-html", "true");
+        btn.attr("title", 'Toggle swimlanes<br><span style="font-size: 0.85em;">Shift : users, Ctrl : all</span>');
         btn.text("Swimlanes");
 
         $('.board-extra-actions').append(btn);

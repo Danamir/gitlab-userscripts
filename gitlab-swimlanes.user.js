@@ -4,7 +4,9 @@
 // @version         0.2
 // @description     Add swimlanes to Gilab issues board
 // @author          Danamir
-// @match           GITLAB_URL/*/boards*
+// @match           http*://*/*/*/boards*
+// @match           http*://*/*/*/*/boards*
+// @match           GITLAB_URL/boards*
 // @require         https://code.jquery.com/jquery-3.3.1.min.js
 // ==/UserScript==
 

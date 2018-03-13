@@ -82,11 +82,44 @@ function update_boards(swimlanes) {
             show_swimlane(id, swimlane_animate);
         }
 
-        $(id+'_title').on("click", function () {
-            if($(id+'_title i').hasClass('fa-caret-down')) {
-                hide_swimlane(id, swimlane_animate);
+        $(id+'_title').on("click", function (e) {
+            if (e && e.ctrlKey) {
+                var mode;
+
+                if($(id+'_title i').hasClass('fa-caret-right')) {
+                    // display myself, hide others
+                    show_swimlane(id, swimlane_animate);
+                    mode = 'hide';
+                }
+
+                $('.boards-list').each(function () {
+                    var board = $(this);
+                    var board_id = '#'+board.prop('id');
+                    if (board_id === '#main-list' || board_id === id) {
+                        return true; // continue
+                    }
+
+                    // first board encountered determines the mode (besides current/main)
+                    if (mode === undefined) {
+                        if($(board_id+'_title i').hasClass('fa-caret-right')) {
+                            mode = 'show';
+                        } else {
+                            mode = 'hide';
+                        }
+                    }
+
+                    if (mode === 'hide') {
+                        hide_swimlane(board_id, swimlane_animate);
+                    } else if (mode === 'show'){
+                        show_swimlane(board_id, swimlane_animate);
+                    }
+                })
             } else {
-                show_swimlane(id, swimlane_animate);
+                if($(id+'_title i').hasClass('fa-caret-down')) {
+                    hide_swimlane(id, swimlane_animate);
+                } else {
+                    show_swimlane(id, swimlane_animate);
+                }
             }
 
         });
@@ -327,7 +360,10 @@ function display_swimlanes() {
                 item = swimlane_item.prop('outerHTML');
             }
 
-            current_board.first().prepend('<'+swimlane_tag+' class="board-inner" id="'+swimlane_id(current_swimlane_title)+'_title" style="cursor: pointer; font-size: '+swimlane_font_size+'; padding: 6px;"><i aria-hidden="true" class="fa fa-fw fa-caret-down"></i>'+title+item+'</'+swimlane_tag+'>');
+            current_board.first().prepend('<'+swimlane_tag+' class="board-inner" id="'+swimlane_id(current_swimlane_title)+'_title" style="cursor: pointer; font-size: '+swimlane_font_size+'; padding: 6px;"><i aria-hidden="true" class="fa fa-fw fa-caret-down"></i><span>'+title+'</span>'+item+'</'+swimlane_tag+'>');
+            $(swimlane_tag+' span', current_board).first().addClass("has-tooltip");
+            $(swimlane_tag+' span', current_board).first().attr("data-html", "true");
+            $(swimlane_tag+' span', current_board).first().attr("title", 'Toggle '+title+'<br><span style="font-size: 0.85em;">Ctrl : toggle all others</span>');
 
             swimlanes[current_swimlane_title] = current_board;
         }
@@ -365,9 +401,19 @@ $(document).ready(function() {
 
     setTimeout(function () {
         var btn = $('.board-extra-actions button:first-child').clone();
+        var tooltip = 'Toggle swimlanes';
+        if (swimlane_types.length >= 2) {
+            tooltip += '<br><span style="font-size: 0.85em;">Shift : '+swimlane_types[1];
+            if (swimlane_types.length >= 3) {
+                tooltip += ', Ctrl : '+swimlane_types[2];
+            }
+            tooltip += '</span>'
+        }
+
         btn.addClass("btn-display-swimlanes has-tooltip");
         btn.attr("data-toggle", "button");
-        btn.attr("title", "Toggle swimlanes");
+        btn.attr("data-html", "true");
+        btn.attr("title", tooltip);
         btn.text("Swimlanes");
 
         $('.board-extra-actions').append(btn);

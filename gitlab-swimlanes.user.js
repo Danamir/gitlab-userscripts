@@ -20,6 +20,9 @@
  *      - Single click group by category labels.
  *      - Shift click group by assigned users.
  *      - Ctrl click group by all non-category labels. (Warning: Can be slow).
+ *   - Click a swimlane to toggle the swimlane :
+ *      - Single click to show/hide this swimlane.
+ *      - Ctrl click to show/hide all other swimlanes.
  *
  * Notes:
  *   - All interactions are disabled in the swimlanes, but still available in the main board.

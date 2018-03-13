@@ -299,15 +299,13 @@ function display_swimlanes() {
             $('.board-delete', current_board).remove();
             $('.is-expandable', current_board).removeClass('is-expandable');
             $('.user-can-drag', current_board).removeClass('user-can-drag');
-
-            // css
+            $('.card-footer button', current_board).css({'cursor': 'default'});
             $('ul', current_board).css({'min-height': swimlane_min_height+'px'});
             if(swimlane_max_height > -1) {
                 $('ul', current_board).css({'max-height': swimlane_max_height+'px'});
             }
             $('.is-collapsed .board-inner', current_board).css({'min-height': (swimlane_min_height+50)+'px'});
             current_board.css({'height': 'auto', 'overflow': 'auto', 'min-height': '0px', 'padding-top': '0px', 'padding-bottom': '0px'});
-
 
             // title
             var title = "";
@@ -396,6 +394,4 @@ $(document).ready(function() {
             remove_swimlanes();
         })
     }, 100);
-
-
 });

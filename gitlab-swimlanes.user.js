@@ -233,7 +233,7 @@ function display_swimlanes() {
     main_board.before('<'+swimlane_tag+' class="board-inner" id="main-list_title" style="font-size: '+swimlane_font_size+'; font-weight: bold; padding: 6px; margin-left: 8px; margin-right: 8px; margin-bottom: -14px; cursor: pointer;"><i aria-hidden="true" class="fa fa-fw fa-caret-down"></i><span>Main board</span></'+swimlane_tag+'>');
     $('#main-list_title span').first().addClass("has-tooltip");
     $('#main-list_title span').first().attr("data-html", "true");
-    $('#main-list_title span').first().attr("title", 'Toggle '+title+'<br><span style="font-size: 0.85em;">Ctrl : toggle all others</span>');
+    $('#main-list_title span').first().attr("title", '<span style="white-space: nowrap;">Toggle '+title+'</span><br><span style="font-size: 0.85em; white-space: nowrap;">Ctrl : toggle all others</span>');
     handle_toggle_swimlane('#main-list');
 
     var swimlanes = {};
@@ -400,7 +400,7 @@ function display_swimlanes() {
             current_board.first().prepend('<'+swimlane_tag+' class="board-inner" id="'+swimlane_id(current_swimlane_title)+'_title" style="cursor: pointer; font-size: '+swimlane_font_size+'; padding: 6px;"><i aria-hidden="true" class="fa fa-fw fa-caret-down"></i><span>'+title+'</span>'+item+'</'+swimlane_tag+'>');
             $(swimlane_tag+' span', current_board).first().addClass("has-tooltip");
             $(swimlane_tag+' span', current_board).first().attr("data-html", "true");
-            $(swimlane_tag+' span', current_board).first().attr("title", 'Toggle '+title+'<br><span style="font-size: 0.85em;">Ctrl : toggle all others</span>');
+            $(swimlane_tag+' span', current_board).first().attr("title", '<span style="white-space: nowrap;">Toggle '+title+'</span><br><span style="font-size: 0.85em; white-space: nowrap;">Ctrl : toggle all others</span>');
 
             swimlanes[current_swimlane_title] = current_board;
         }
@@ -439,9 +439,9 @@ $(document).ready(function() {
 
     setTimeout(function () {
         var btn = $('.board-extra-actions button:first-child').clone();
-        var tooltip = 'Toggle swimlanes';
+        var tooltip = '<span style="white-space: nowrap;">Toggle swimlanes</span>';
         if (swimlane_types.length >= 2) {
-            tooltip += '<br><span style="font-size: 0.85em;">Ctrl : '+swimlane_types[1];
+            tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap;">Ctrl : '+swimlane_types[1];
             if (swimlane_types.length >= 3) {
                 tooltip += ', Shift : '+swimlane_types[2];
             }

@@ -7,8 +7,6 @@
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
 // @require         https://code.jquery.com/jquery-3.3.1.min.js
-// @requireaaaaaa         https://raw.githubusercontent.com/Danamir/gitlab-userscripts/develop/lib/Markdown.Converter.js
-// @require         https://cdn.rawgit.com/showdownjs/showdown/master/dist/showdown.min.js
 // ==/UserScript==
 
 /**
@@ -20,6 +18,9 @@
  * Notes:
  *   - Limited to the dislayed issues on first load.
  */
+// configuration
+var description_font_size = ".90em";
+var description_color = "#909090";
 
 // local variables
 var project_id;
@@ -78,12 +79,16 @@ function get_issue_ids(board) {
 
 /**
  * Fetch descriptions
- * @param iids The issues ids.
+ * @param iids The issues ids. (default = all visible ids)
  */
 function refresh_descriptions(iids) {
     if (!project_id) {
         console.log("Project id not found.");
         return;
+    }
+
+    if (!iids) {
+        iids = get_issue_ids();
     }
 
     var issues = {};
@@ -102,6 +107,7 @@ function refresh_descriptions(iids) {
                 issues[issue['iid']] = issue;
             });
 
+            $('.btn-display-board-descriptions').removeClass("disabled");
             display_descriptions(issues);
         }
     });
@@ -112,15 +118,6 @@ function refresh_descriptions(iids) {
  * @param issues
  */
 function display_descriptions(issues) {
-    console.log("issues", issues);
-    var converter = new Showdown.Converter();
-    var text      = '#hello, markdown!';
-    var html      = converter.makeHtml(text);
-    console.log(html);
-
-    /*var converter = new Markdown.Converter();
-    console.log(converter.makeHtml("**I am bold!**"));*/
-
     $('.boards-list').each(function () {
         var board = $(this);
 
@@ -131,21 +128,34 @@ function display_descriptions(issues) {
 
             if(issues[id] && issues[id]['description']) {
                 var description = issues[id]['description'];
-                var body = $('.card-body', card);
 
-
-                description = converter.makeHtml(description);
-
-                if (body.length === 0) {
-                    body = '<div class="card-body">'+description+'</div>';
-                    header.after(body);
+                if ($('.card-body', card).length === 0) {
+                    header.after('<div class="card-body"><div class="card-description"></div></div>');
                 }
 
-                if (body.text !== undefined) {
-                    body.text(description);
-                }
+                $('.card-description', card).text(description);
             }
         });
+    });
+
+    show_descriptions();
+}
+
+/**
+ * Show descriptions.
+ */
+function show_descriptions() {
+    $('.card-description').each(function () {
+       $(this).css({display: ""});
+    });
+}
+
+/**
+ * Display descriptions.
+ */
+function hide_descriptions() {
+    $('.card-description').each(function () {
+       $(this).css({display: "none"});
     });
 }
 
@@ -155,6 +165,22 @@ $(document).ready(function() {
     setTimeout(function () {
         project_id = get_project_id();
 
+        // styles
+        $('head').append('\
+        <style type="text/css">\
+            .card-body {\
+                \
+            }\
+            .card-description {\
+                font-size: '+description_font_size+';\
+                color: '+description_color+';\
+                white-space: pre-wrap;\
+                overflow: hidden;\
+                max-height: 120px;\
+            }\
+        </style>');
+
+        // descriptions button
         var btn = $('.board-extra-actions button:first-child').clone();
         var tooltip = '<span style="white-space: nowrap">Toggle descriptions</span>';
         tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap">Ctrl : Refresh descriptions</span>';
@@ -169,7 +195,8 @@ $(document).ready(function() {
 
         $('.board-extra-actions').append(btn);
 
-        // per_page = 100
+        // first load
+        refresh_descriptions();
 
         $('.btn-display-board-descriptions').on("click", function (e) {
             if (e && e.ctrlKey) {
@@ -179,8 +206,10 @@ $(document).ready(function() {
             }
 
             if(btn.attr("aria-pressed") === "false") {
-                var iids = get_issue_ids();
-                refresh_descriptions(iids);
+                // $('.btn-display-board-descriptions').addClass("disabled");
+                refresh_descriptions();
+            } else {
+                hide_descriptions();
             }
         });
     }, 110);

@@ -21,6 +21,7 @@
 // configuration
 var description_font_size = ".90em";
 var description_color = "#909090";
+var description_height = "135px";
 
 // local variables
 var project_id;
@@ -169,14 +170,24 @@ $(document).ready(function() {
         $('head').append('\
         <style type="text/css">\
             .card-body {\
-                \
+                position: relative;\
             }\
             .card-description {\
                 font-size: '+description_font_size+';\
                 color: '+description_color+';\
                 white-space: pre-wrap;\
                 overflow: hidden;\
-                max-height: 120px;\
+                max-height: '+description_height+';\
+                \
+            }\
+            .card-description:after {\
+                content:"";\
+                position:absolute;\
+                bottom:0;\
+                left:0;\
+                top:calc('+description_height+' - 20px);\
+                width:100%;\
+                background: linear-gradient(rgba(255,255,255,0), #FFF);\
             }\
         </style>');
 

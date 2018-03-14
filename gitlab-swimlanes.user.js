@@ -18,8 +18,8 @@
  *   - Load the script with Tampermonkey: http://tampermonkey.net/ .
  *   - Click the Swimlanes button beside the search fields to toggle the swimlanes display :
  *      - Single click group by category labels.
- *      - Shift click group by assigned users.
- *      - Ctrl click group by all non-category labels. (Warning: Can be slow).
+ *      - Ctrl click group by assigned users.
+ *      - Shift click group by all non-category labels. (Warning: Can be slow).
  *   - Click a swimlane to toggle the swimlane :
  *      - Single click to show/hide this swimlane.
  *      - Ctrl click to show/hide all other swimlanes.
@@ -36,7 +36,7 @@ var swimlane_font_size = '16px';
 
 var swimlane_hide_main = true; // can hide main board when toggling all
 var swimlane_animate = true; // show/hide animations
-var swimlane_types = ["label", "user", "all"];  // behaviour of click, shift + click, ctrl + click
+var swimlane_types = ["label", "user", "all"];  // behaviour of click, ctrl + click, shift + click
 
 // local variables
 var hidden_lanes = [];
@@ -441,9 +441,9 @@ $(document).ready(function() {
         var btn = $('.board-extra-actions button:first-child').clone();
         var tooltip = 'Toggle swimlanes';
         if (swimlane_types.length >= 2) {
-            tooltip += '<br><span style="font-size: 0.85em;">Shift : '+swimlane_types[1];
+            tooltip += '<br><span style="font-size: 0.85em;">Ctrl : '+swimlane_types[1];
             if (swimlane_types.length >= 3) {
-                tooltip += ', Ctrl : '+swimlane_types[2];
+                tooltip += ', Shift : '+swimlane_types[2];
             }
             tooltip += '</span>'
         }
@@ -457,9 +457,9 @@ $(document).ready(function() {
         $('.board-extra-actions').append(btn);
 
         $('.btn-display-swimlanes').on("click", function (e) {
-            if (e && e.shiftKey && swimlane_types.length > 1) {
+            if (e && e.ctrlKey && swimlane_types.length > 1) {
                 swimlane_type = swimlane_types[1];
-            } else if (e && e.ctrlKey && swimlane_types.length > 2) {
+            } else if (e && e.shiftKey && swimlane_types.length > 2) {
                 swimlane_type = swimlane_types[2];
             } else {
                 swimlane_type = swimlane_types[0];

@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name            Gitlab swimlanes
-// @namespace       https://github.com/Danamir/gitlab-swimlanes/
+// @name            GitLab swimlanes
+// @namespace       https://github.com/Danamir/gitlab-userscripts/
 // @version         0.2
-// @description     Add simlanes to Gilab issues board
+// @description     Add swimlanes to GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
@@ -435,7 +435,7 @@ function remove_swimlanes() {
 }
 
 $(document).ready(function() {
-    console.log('Loading Gitlab swimlanes...');
+    console.log('Loading GitLab swimlanes...');
 
     setTimeout(function () {
         var btn = $('.board-extra-actions button:first-child').clone();

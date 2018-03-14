@@ -7,7 +7,8 @@
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
 // @require         https://code.jquery.com/jquery-3.3.1.min.js
-// @require         https://raw.githubusercontent.com/showdownjs/showdown/master/src/converter.js
+// @requireaaaaaa         https://raw.githubusercontent.com/Danamir/gitlab-userscripts/develop/lib/Markdown.Converter.js
+// @require         https://cdn.rawgit.com/showdownjs/showdown/master/dist/showdown.min.js
 // ==/UserScript==
 
 /**
@@ -112,10 +113,13 @@ function refresh_descriptions(iids) {
  */
 function display_descriptions(issues) {
     console.log("issues", issues);
-    var converter = new showdown.Converter();
+    var converter = new Showdown.Converter();
     var text      = '#hello, markdown!';
     var html      = converter.makeHtml(text);
     console.log(html);
+
+    /*var converter = new Markdown.Converter();
+    console.log(converter.makeHtml("**I am bold!**"));*/
 
     $('.boards-list').each(function () {
         var board = $(this);

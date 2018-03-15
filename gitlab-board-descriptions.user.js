@@ -20,8 +20,8 @@
  */
 // configuration
 var description_font_size = ".90em";
-var description_color = "#909090";
 var description_height = "135px";
+var description_markdown_quick_render = true;
 
 // local variables
 var project_id;
@@ -128,15 +128,39 @@ function display_descriptions(issues) {
             var id = $('.card-number', header).text().trim().replace(/^#/, '');
 
             if(issues[id] && issues[id]['description']) {
-                var description = issues[id]['description'];
+                var description = issues[id]['description'].trim();
 
                 if ($('.card-body', card).length === 0) {
                     header.after('<div class="card-body"><div class="card-description"></div></div>');
                 }
 
-                $('.card-description', card).text(description);
+                if (description_markdown_quick_render) {
+                    description = markdown_quick_render(description);
+                }
+
+                $('.card-description', card).html(description);
             }
         });
+    });
+
+    $('.card-description').on("click", function (e) {
+        var card = $(this);
+
+        setTimeout(function () {
+            var block_description = $('.js-issuable-update .block.description');
+            if (block_description.length === 0) {
+                block_description = '<div class="block description"><div class="title">Description</div><div class="value">' + card.html() + '</div></div>';
+
+                var block_subscriptions = $('.js-issuable-update .block.subscriptions');
+                if (block_subscriptions.length >= 0) {
+                    block_subscriptions.before(block_description);
+                } else {
+                    $('.js-issuable-update div').last().after(block_description);
+                }
+            }
+
+            $('.value', block_description).html(card.html());
+        }, 10);
     });
 
     show_descriptions();
@@ -160,6 +184,32 @@ function hide_descriptions() {
     });
 }
 
+/**
+ * Minimal markdown renderer.
+ * @param text
+ * @return {string}
+ */
+function markdown_quick_render(text) {
+    if (!text) {
+        return text;
+    }
+
+    var markdown = text;
+    markdown = markdown.replace('<', '&lt;');
+    markdown = markdown.replace('>', '&gt;');
+    markdown = markdown.replace(/```(\S*)\n([\s\S]*)\n\s*```/gm, '<pre class="code code-$1">$2</pre>');
+    markdown = markdown.replace(/`(.*)`/g, '<code class="code">$1</code>');
+    // markdown = markdown.replace(/(#+)(.*)/g, '$1<strong>$2</strong>');
+    markdown = markdown.replace(/##/g, '▪▪');
+    markdown = markdown.replace(/([\s▪])#/g, '$1▪');
+    markdown = markdown.replace(/ {2,10}[*\-]/g, '&nbsp;&nbsp;&nbsp;&nbsp;▫');
+    markdown = markdown.replace(/ [*\-]/g, '&nbsp;•');
+    markdown = markdown.replace(/\B[*\-]/g, '•');
+    markdown = markdown.replace(/((&nbsp;)?[▫•]?\s*)(https?:\/\/\S+)/g, '<span style="white-space: nowrap; overflow-y: hidden;">$1$2 $3</span>');
+
+    return markdown;
+}
+
 $(document).ready(function() {
     console.log('Loading GitLab board descriptions...');
 
@@ -174,7 +224,7 @@ $(document).ready(function() {
             }\
             .card-description {\
                 font-size: '+description_font_size+';\
-                color: '+description_color+';\
+                color: #909090;\
                 white-space: pre-wrap;\
                 overflow: hidden;\
                 max-height: '+description_height+';\
@@ -188,6 +238,21 @@ $(document).ready(function() {
                 top:calc('+description_height+' - 20px);\
                 width:100%;\
                 background: linear-gradient(rgba(255,255,255,0), #FFF);\
+            }\
+            .card-description code, .block.description code {\
+                color: inherit;\
+                background: #f0f0f0;\
+                padding: 1px 2px;\
+            }\
+            .card-description pre.code, .block.description pre.code {\
+                color: inherit;\
+                padding: 1px 2px;\
+                border-color: #f4f4f4;\
+            }\
+            .block.description .value {\
+                font-size: '+description_font_size+';\
+                color: #707070;\
+                white-space: pre-wrap;\
             }\
         </style>');
 

@@ -288,5 +288,5 @@ $(document).ready(function() {
                 hide_descriptions();
             }
         });
-    }, 110);
+    }, 200);
 });

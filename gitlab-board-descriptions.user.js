@@ -195,16 +195,23 @@ function markdown_quick_render(text) {
     }
 
     var markdown = text;
-    markdown = markdown.replace('<', '&lt;');
-    markdown = markdown.replace('>', '&gt;');
-    markdown = markdown.replace(/```(\S*)\n([\s\S]*)\n\s*```/gm, '<pre class="code code-$1">$2</pre>');
-    markdown = markdown.replace(/`(.*)`/g, '<code class="code">$1</code>');
-    // markdown = markdown.replace(/(#+)(.*)/g, '$1<strong>$2</strong>');
+    // html
+    markdown = markdown.replace(/</g, '&lt;');
+    markdown = markdown.replace(/>/g, '&gt;');
+
+    // code
+    markdown = markdown.replace(/```(\S*)\s*\n(.*)\n\s*```/gs, '<pre class="code code-$1">$2</pre>');
+    markdown = markdown.replace(/`([^`]*)`/g, '<code class="code">$1</code>');
+
+    // title
     markdown = markdown.replace(/##/g, '▪▪');
-    markdown = markdown.replace(/([\s▪])#/g, '$1▪');
-    markdown = markdown.replace(/ {2,10}[*\-]/g, '&nbsp;&nbsp;&nbsp;&nbsp;▫');
-    markdown = markdown.replace(/ [*\-]/g, '&nbsp;•');
-    markdown = markdown.replace(/\B[*\-]/g, '•');
+    markdown = markdown.replace(/([\n▪])#/g, '$1▪');
+    // markdown = markdown.replace(/(▪+ .*)/g, '<strong>$1</strong>');
+
+    // list
+    markdown = markdown.replace(/\n {2,10}[*\-]/g, '\n&nbsp;&nbsp;&nbsp;&nbsp;▫');
+    markdown = markdown.replace(/\n [*\-]/g, '\n&nbsp;•');
+    markdown = markdown.replace(/\n[*\-]/g, '\n•');
     markdown = markdown.replace(/((&nbsp;)?[▫•]?\s*)(https?:\/\/\S+)/g, '<span style="white-space: nowrap; overflow-y: hidden;">$1$2 $3</span>');
 
     return markdown;

@@ -200,7 +200,7 @@ function markdown_quick_render(text) {
     markdown = markdown.replace(/>/g, '&gt;');
 
     // code
-    markdown = markdown.replace(/```(\S*)\s*\n(.*)\n\s*```/gs, '<pre class="code code-$1">$2</pre>');
+    markdown = markdown.replace(/```(\S*)\s*\n([\s\S]*)\n\s*```/g, '<pre class="code code-$1">$2</pre>');
     markdown = markdown.replace(/`([^`]*)`/g, '<code class="code">$1</code>');
 
     // title

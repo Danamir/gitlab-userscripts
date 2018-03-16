@@ -20,7 +20,7 @@
  */
 // configuration
 var description_font_size = ".90em";
-var description_height = "135px";
+var description_height = "12em";
 var description_markdown_quick_render = true;
 
 // local variables
@@ -248,7 +248,7 @@ $(document).ready(function() {
                 position:absolute;\
                 bottom:0;\
                 left:0;\
-                top:calc('+description_height+' - 20px);\
+                top:calc('+description_height+' - 2em);\
                 width:100%;\
                 background: linear-gradient(rgba(255,255,255,0), #FFF);\
             }\

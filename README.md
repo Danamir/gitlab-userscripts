@@ -32,3 +32,7 @@ Userscript to display issues description preview in GitLab issues board.
 
 ##### Notes
   - Limited to the dislayed issues on first load.
+
+### Screenshots
+
+![GitLab no userscript](resources/gitlab-no-userscript.png)

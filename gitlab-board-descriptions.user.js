@@ -92,26 +92,32 @@ function refresh_descriptions(iids) {
         iids = get_issue_ids();
     }
 
-    var issues = {};
+    var page_iids = iids.splice(0, 100);
 
-    $.ajax({
-        url: "/api/v4/projects/"+project_id+"/issues",
-        data: {
-            per_page: 100,
-            iids: iids
-        },
-        type: "GET",
-        success: function (data) {
-            $.each(data, function () {
-                var issue = this;
+    while(page_iids.length > 0) {
+        $.ajax({
+            url: "/api/v4/projects/"+project_id+"/issues",
+            data: {
+                per_page: 100,
+                iids: page_iids
+            },
+            type: "GET",
+            success: function (data) {
+                var issues = {};
 
-                issues[issue['iid']] = issue;
-            });
+                $.each(data, function () {
+                    var issue = this;
 
-            $('.btn-display-board-descriptions').removeClass("disabled");
-            display_descriptions(issues);
-        }
-    });
+                    issues[issue['iid']] = issue;
+                });
+
+                $('.btn-display-board-descriptions').removeClass("disabled");
+                display_descriptions(issues);
+            }
+        });
+
+        page_iids = iids.splice(0, 100);
+    }
 }
 
 /**

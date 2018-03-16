@@ -257,7 +257,7 @@ $(document).ready(function() {
         </style>');
 
         // descriptions button
-        var btn = $('.board-extra-actions button:first-child').clone();
+        var btn = $('<button type="button" class="btn btn-create prepend-left-10"></button>');
         var tooltip = '<span style="white-space: nowrap">Toggle descriptions</span>';
         tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap">Ctrl : Refresh descriptions</span>';
 
@@ -288,5 +288,5 @@ $(document).ready(function() {
                 hide_descriptions();
             }
         });
-    }, 500);
+    }, 1000);
 });

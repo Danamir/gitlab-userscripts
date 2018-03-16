@@ -438,7 +438,7 @@ $(document).ready(function() {
     console.log('Loading GitLab swimlanes...');
 
     setTimeout(function () {
-        var btn = $('.board-extra-actions button:first-child').clone();
+        var btn = $('<button type="button" class="btn btn-create prepend-left-10"></button>');
         var tooltip = '<span style="white-space: nowrap;">Toggle swimlanes</span>';
         if (swimlane_types.length >= 2) {
             tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap;">Ctrl : '+swimlane_types[1];

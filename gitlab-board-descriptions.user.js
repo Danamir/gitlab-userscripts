@@ -23,7 +23,7 @@ var description_font_size = ".90em";
 var description_height = "12em";
 var description_markdown_quick_render = true;
 var description_stoppers = [
-    /^\*\(from redmine: .*\)\*$/
+    /^.{0,3}\(from redmine: .*\).{0,3}$/
 ];
 
 // local variables

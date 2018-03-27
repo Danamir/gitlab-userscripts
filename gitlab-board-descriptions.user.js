@@ -210,10 +210,14 @@ function markdown_quick_render(text) {
     markdown = markdown.replace(/`([^`]*)`/g, '<code class="code">$1</code>');
 
     // styles
-    markdown = markdown.replace(/(^|\s+)\*{3}([^*\n]+)\*{3}(\s+|$)/g, '$1<i><b>$2</b></i>$3');
-    markdown = markdown.replace(/(^|\s+)\*{2}([^*\n]+)\*{2}(\s+|$)/g, '$1<b>$2</b>$3');
-    markdown = markdown.replace(/(^|\s+)\*{1}([^*\n]+)\*{1}(\s+|$)/g, '$1<i>$2</i>$3');
-    markdown = markdown.replace(/(^|\s+)_{1}([^_\n]+)_{1}(\s+|$)/g, '$1<span style="text-decoration: underline;">$2</span>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{3}([^*\n]+)\*{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{2}([^*\n]+)\*{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{1}([^*\n]+)\*{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');
+
+    // markdown = markdown.replace(/(^|\s+)_{1}([^_\n]+)_{1}(\s+|$)/g, '$1<span style="text-decoration: underline;">$2</span>$3');  // underline markdown is not supported in GitLab
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{3}([^_\n]+)_{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{2}([^_\n]+)_{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{1}([^_\n]+)_{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');
 
     // title
     markdown = markdown.replace(/##/g, '▪▪');

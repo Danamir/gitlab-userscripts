@@ -181,23 +181,34 @@ function display_descriptions(issues) {
         });
     });
 
-    $('.card-description').on("click", function (e) {
+    $('.card').on("click", function (e) {
         var card = $(this);
+        var card_description = $('.card-description', card);
+        var has_description = card_description.length > 0;
 
         setTimeout(function () {
             var block_description = $('.js-issuable-update .block.description');
-            if (block_description.length === 0) {
-                block_description = '<div class="block description"><div class="title">Description</div><div class="value">' + card.html() + '</div></div>';
 
-                var block_subscriptions = $('.js-issuable-update .block.subscriptions');
-                if (block_subscriptions.length >= 0) {
-                    block_subscriptions.before(block_description);
-                } else {
-                    $('.js-issuable-update div').last().after(block_description);
+            if (!has_description) {
+                if (block_description.length > 0) {
+                    block_description.remove();
                 }
+
+            } else {
+                if (block_description.length === 0) {
+                    block_description = '<div class="block description"><div class="title">Description</div><div class="value">' + card_description.html() + '</div></div>';
+
+                    var block_subscriptions = $('.js-issuable-update .block.subscriptions');
+                    if (block_subscriptions.length >= 0) {
+                        block_subscriptions.before(block_description);
+                    } else {
+                        $('.js-issuable-update div').last().after(block_description);
+                    }
+                }
+
+                $('.value', block_description).html(card_description.html());
             }
 
-            $('.value', block_description).html(card.html());
         }, 10);
     });
 

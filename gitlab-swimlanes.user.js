@@ -251,110 +251,123 @@ function display_swimlanes() {
         var current_swimlane_title = undefined;
         var swimlane_item = undefined;
 
-        $('.card', current_board).each(function () {
-            var card = $(this);
-            var keep_card = false;
+        $('.board', current_board).each(function () {
+            var board = $(this);
 
-            if (swimlane_type === "label") {
-                $('.card-footer button', card).each(function () {
-                    var item = $(this);
-                    var title = "";
-                    if(item.prop("title")) {
-                        title = item.prop("title");
-                    } else if (item.attr("data-original-title")) {
-                        title = item.attr("data-original-title");
-                    }
+            $('.card', board).each(function () {
+                var card = $(this);
+                var keep_card = false;
 
-                    if (title) {
-                        var match = /^(.*)\s*-(.*)-$/.exec(title);
+                if (board.hasClass("is-collapsed")) {
+                   keep_card = false; // collapsed board, remove all cards
 
-                        if (!match) {
-                            // not a category label
-                            return true; // continue
-                        } else if (current_swimlane_title && title !== current_swimlane_title) {
-                            // not current swimlane
-                            return true; // continue
-                        } else if (has_swimlane(swimlanes, title)) {
-                            // swimlane already exists
-                            return true; // continue
+                } else if (swimlane_type === "label") {
+                    // Swimlanes by label categories
+                    $('.card-footer button', card).each(function () {
+                        var item = $(this);
+                        var title = "";
+                        if(item.prop("title")) {
+                            title = item.prop("title");
+                        } else if (item.attr("data-original-title")) {
+                            title = item.attr("data-original-title");
                         }
 
-                        current_swimlane_title = title;
-                        swimlane_item = item;
-                        keep_card = true;
-                    }
-                });
-            } else if (swimlane_type === "all") {
-                $('.card-footer button', card).each(function () {
-                    var item = $(this);
-                    var title = item.text().trim();
+                        if (title) {
+                            var match = /^(.*)\s*-(.*)-$/.exec(title);
 
-                    var tooltip = "";
-                    if(item.prop("title")) {
-                        tooltip = item.prop("title");
-                    } else if (item.attr("data-original-title")) {
-                        tooltip = item.attr("data-original-title");
-                    }
+                            if (!match) {
+                                // not a category label
+                                return true; // continue
+                            } else if (current_swimlane_title && title !== current_swimlane_title) {
+                                // not current swimlane
+                                return true; // continue
+                            } else if (has_swimlane(swimlanes, title)) {
+                                // swimlane already exists
+                                return true; // continue
+                            }
 
-                    if (title) {
-                        var match = /^(.*)\s*-(.*)-$/.exec(tooltip);
+                            current_swimlane_title = title;
+                            swimlane_item = item;
+                            keep_card = true;
+                        }
+                    });
 
-                        if (match) {
-                            // category label
-                            return true; // continue
-                        } else if ($.inArray(title, list_titles) > -1) {
-                            // already displayed as list
-                            return true; // continue
-                        } else if (current_swimlane_title && title !== current_swimlane_title) {
-                            // not current swimlane
-                            return true; // continue
-                        } else if (has_swimlane(swimlanes, title)) {
-                            // swimlane already exists
-                            return true; // continue
+                } else if (swimlane_type === "all") {
+                    // Swimlanes by all labels
+                    $('.card-footer button', card).each(function () {
+                        var item = $(this);
+                        var title = item.text().trim();
+
+                        var tooltip = "";
+                        if(item.prop("title")) {
+                            tooltip = item.prop("title");
+                        } else if (item.attr("data-original-title")) {
+                            tooltip = item.attr("data-original-title");
                         }
 
-                        current_swimlane_title = title;
-                        swimlane_item = item;
-                        keep_card = true;
-                    }
-                });
-            } else if (swimlane_type === "user") {
-                $('.card-assignee img', card).each(function () {
-                    var item = $(this);
-                    var title = "";
-                    if(item.prop("title")) {
-                        title = item.prop("title");
-                    } else if (item.attr("data-original-title")) {
-                        title = item.attr("data-original-title");
-                    }
+                        if (title) {
+                            var match = /^(.*)\s*-(.*)-$/.exec(tooltip);
 
-                    if (title) {
-                        var match = /^Assi\S* \S+ (.*)$/.exec(title);
+                            if (match) {
+                                // category label
+                                return true; // continue
+                            } else if ($.inArray(title, list_titles) > -1) {
+                                // already displayed as list
+                                return true; // continue
+                            } else if (current_swimlane_title && title !== current_swimlane_title) {
+                                // not current swimlane
+                                return true; // continue
+                            } else if (has_swimlane(swimlanes, title)) {
+                                // swimlane already exists
+                                return true; // continue
+                            }
 
-                        if (!match) {
-                            // not a swimline title
-                            return true; // continue
-                        } else if (current_swimlane_title && title !== current_swimlane_title) {
-                            // not current swimlane
-                            return true; // continue
-                        } else if (has_swimlane(swimlanes, title)) {
-                            // swimlane already exists
-                            return true; // continue
+                            current_swimlane_title = title;
+                            swimlane_item = item;
+                            keep_card = true;
+                        }
+                    });
+
+                } else if (swimlane_type === "user") {
+                    // Swimlanes by users
+                    $('.card-assignee img', card).each(function () {
+                        var item = $(this);
+                        var title = "";
+                        if(item.prop("title")) {
+                            title = item.prop("title");
+                        } else if (item.attr("data-original-title")) {
+                            title = item.attr("data-original-title");
                         }
 
-                        current_swimlane_title = title;
-                        swimlane_item = item;
-                        keep_card = true;
-                    }
-                });
-            } else {
-                console.log("Unknown swimlane type: "+swimlane_type);
-            }
+                        if (title) {
+                            var match = /^Assi\S* \S+ (.*)$/.exec(title);
 
-            if (!keep_card) {
-                card.remove();
-                return true; // continue
-            }
+                            if (!match) {
+                                // not a swimline title
+                                return true; // continue
+                            } else if (current_swimlane_title && title !== current_swimlane_title) {
+                                // not current swimlane
+                                return true; // continue
+                            } else if (has_swimlane(swimlanes, title)) {
+                                // swimlane already exists
+                                return true; // continue
+                            }
+
+                            current_swimlane_title = title;
+                            swimlane_item = item;
+                            keep_card = true;
+                        }
+                    });
+
+                } else {
+                    console.log("Unknown swimlane type: "+swimlane_type);
+                }
+
+                if (!keep_card) {
+                    card.remove();
+                    return true; // continue
+                }
+            });
         });
 
         // add swimlane

@@ -22,6 +22,9 @@
 var description_font_size = ".90em";
 var description_height = "12em";
 var description_markdown_quick_render = true;
+var description_stoppers = [
+    /^\*\(from redmine: .*\)\*$/
+];
 
 // local variables
 var project_id;
@@ -96,7 +99,7 @@ function refresh_descriptions(iids) {
 
     while(page_iids.length > 0) {
         $.ajax({
-            url: "/api/v4/projects/"+project_id+"/issues",
+            url: "/api/v4/projects/" + project_id + "/issues",
             data: {
                 per_page: 100,
                 iids: page_iids
@@ -108,7 +111,36 @@ function refresh_descriptions(iids) {
                 $.each(data, function () {
                     var issue = this;
 
-                    issues[issue['iid']] = issue;
+                    if (!issue || !issue.description) {
+                        return true; // continue
+                    }
+
+                    var lines = [];
+                    var skip = false;
+
+                    $.each(issue.description.split("\n"), function () {
+                        var line = this;
+
+                        $.each(description_stoppers, function () {
+                            var stopper = this;
+
+                            if (stopper.exec(line.trim())) {
+                                skip = true;
+                                return false; // break
+                            }
+                        });
+
+                        if (skip) {
+                            return false; // break
+                        }
+
+                        lines.push(line);
+                    });
+
+                    if (lines.length > 0) {
+                        issue.description = lines.join("\n");
+                        issues[issue['iid']] = issue;
+                    }
                 });
 
                 $('.btn-display-board-descriptions').removeClass("disabled");

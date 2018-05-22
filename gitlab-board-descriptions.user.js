@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.3
+// @version         0.4
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -23,7 +23,7 @@ var description_font_size = ".90em";
 var description_height = "12em";
 var description_markdown_quick_render = true;
 var description_ignores = [
-    /^\s*(Discussion|Cf\.?)\s*:\s*#.*$/
+    /^\s*(discussion|cf\.?)\s*:\s*#.*$/i
 ];
 var description_stoppers = [
     /^.{0,3}\(from redmine: .*\).{0,3}$/
@@ -156,6 +156,10 @@ function refresh_descriptions(iids) {
 
                         lines.push(line);
                     });
+
+                    if (lines_full.length > 0 && lines.length === 0) {
+                        lines.push(" ");
+                    }
 
                     if (lines.length > 0) {
                         issue.description = lines.join("\n");

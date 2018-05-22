@@ -22,6 +22,9 @@
 var description_font_size = ".90em";
 var description_height = "12em";
 var description_markdown_quick_render = true;
+var description_ignores = [
+    /^\s*(Discussion|Cf\.?)\s*:\s*#.*$/
+];
 var description_stoppers = [
     /^.{0,3}\(from redmine: .*\).{0,3}$/
 ];
@@ -116,21 +119,38 @@ function refresh_descriptions(iids) {
                     }
 
                     var lines = [];
+                    var lines_full = [];
+                    var stop = false;
                     var skip = false;
 
                     $.each(issue.description.split("\n"), function () {
                         var line = this;
 
-                        $.each(description_stoppers, function () {
-                            var stopper = this;
+                        // ignore lines
+                        $.each(description_ignores, function () {
+                            var ignore = this;
 
-                            if (stopper.exec(line.trim())) {
+                            if (ignore.exec(line.trim())) {
                                 skip = true;
                                 return false; // break
                             }
                         });
 
+                        // stop description scanning
+                        $.each(description_stoppers, function () {
+                            var stopper = this;
+
+                            if (stopper.exec(line.trim())) {
+                                stop = true;
+                                return false; // break
+                            }
+                        });
+
+                        lines_full.push(line);
+
                         if (skip) {
+                            return true; // continue
+                        } else if (stop) {
                             return false; // break
                         }
 
@@ -139,6 +159,7 @@ function refresh_descriptions(iids) {
 
                     if (lines.length > 0) {
                         issue.description = lines.join("\n");
+                        issue.description_full = lines_full.join("\n");
                         issues[issue['iid']] = issue;
                     }
                 });
@@ -167,23 +188,31 @@ function display_descriptions(issues) {
 
             if(issues[id] && issues[id]['description']) {
                 var description = issues[id]['description'].trim();
+                var description_full = issues[id]['description_full'].trim();
 
                 if ($('.card-body', card).length === 0) {
-                    header.after('<div class="card-body"><div class="card-description"></div></div>');
+                    header.after('<div class="card-body"><div class="card-description"></div><div class="card-description-full"></div></div>');
                 }
 
                 if (description_markdown_quick_render) {
-                    description = markdown_quick_render(description);
+                    if (description_full === description) {
+                        description = markdown_quick_render(description);
+                        description_full = description;
+                    } else {
+                        description = markdown_quick_render(description);
+                        description_full = markdown_quick_render(description_full);
+                    }
                 }
 
                 $('.card-description', card).html(description);
+                $('.card-description-full', card).html(description_full);
             }
         });
     });
 
     $('.card').on("click", function (e) {
         var card = $(this);
-        var card_description = $('.card-description', card);
+        var card_description = $('.card-description-full', card);
         var has_description = card_description.length > 0;
 
         setTimeout(function () {
@@ -314,6 +343,9 @@ $(document).ready(function() {
                 color: inherit;\
                 padding: 1px 2px;\
                 border-color: #f4f4f4;\
+            }\
+            .card-description-full {\
+                display: none;\
             }\
             .block.description .value {\
                 font-size: '+description_font_size+';\

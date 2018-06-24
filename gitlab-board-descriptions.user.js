@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.4
+// @version         0.5
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -74,7 +74,7 @@ function get_issue_ids(board) {
     }
 
     var iids = [];
-    $('.card-number', board).each(function () {
+    $('.card-number,.board-card-number', board).each(function () {
         var id = $(this).text().trim().replace(/^#/, '');
         if ($.inArray(id, iids) === -1) {
             iids.push(id);
@@ -185,17 +185,17 @@ function display_descriptions(issues) {
     $('.boards-list').each(function () {
         var board = $(this);
 
-        $('.card', board).each(function () {
+        $('.card,.board-card', board).each(function () {
             var card = $(this);
-            var header = $('.card-header', card);
-            var id = $('.card-number', header).text().trim().replace(/^#/, '');
+            var header = $('.card-header,.board-card-header', card);
+            var id = $('.card-number,.board-card-number', header).text().trim().replace(/^#/, '');
 
             if(issues[id] && issues[id]['description']) {
                 var description = issues[id]['description'].trim();
                 var description_full = issues[id]['description_full'].trim();
 
-                if ($('.card-body', card).length === 0) {
-                    header.after('<div class="card-body"><div class="card-description"></div><div class="card-description-full"></div></div>');
+                if ($('.board-card-body', card).length === 0) {
+                    header.after('<div class="board-card-body"><div class="board-card-description"></div><div class="board-card-description-full"></div></div>');
                 }
 
                 if (description_markdown_quick_render) {
@@ -208,15 +208,15 @@ function display_descriptions(issues) {
                     }
                 }
 
-                $('.card-description', card).html(description);
-                $('.card-description-full', card).html(description_full);
+                $('.board-card-description', card).html(description);
+                $('.board-card-description-full', card).html(description_full);
             }
         });
     });
 
-    $('.card').on("click", function (e) {
+    $('.card,.board-card').on("click", function (e) {
         var card = $(this);
-        var card_description = $('.card-description-full', card);
+        var card_description = $('.board-card-description-full', card);
         var has_description = card_description.length > 0;
 
         setTimeout(function () {
@@ -252,7 +252,7 @@ function display_descriptions(issues) {
  * Show descriptions.
  */
 function show_descriptions() {
-    $('.card-description').each(function () {
+    $('.board-card-description').each(function () {
        $(this).css({display: ""});
     });
 }
@@ -261,7 +261,7 @@ function show_descriptions() {
  * Display descriptions.
  */
 function hide_descriptions() {
-    $('.card-description').each(function () {
+    $('.board-card-description').each(function () {
        $(this).css({display: "none"});
     });
 }
@@ -318,10 +318,10 @@ $(document).ready(function() {
         // styles
         $('head').append('\
         <style type="text/css">\
-            .card-body {\
+            .board-card-body {\
                 position: relative;\
             }\
-            .card-description {\
+            .board-card-description {\
                 font-size: '+description_font_size+';\
                 color: #909090;\
                 white-space: pre-wrap;\
@@ -329,7 +329,7 @@ $(document).ready(function() {
                 max-height: '+description_height+';\
                 \
             }\
-            .card-description:after {\
+            .board-card-description:after {\
                 content:"";\
                 position:absolute;\
                 bottom:0;\
@@ -338,17 +338,17 @@ $(document).ready(function() {
                 width:100%;\
                 background: linear-gradient(rgba(255,255,255,0), #FFF);\
             }\
-            .card-description code, .block.description code {\
+            .board-card-description code, .block.description code {\
                 color: inherit;\
                 background: #f0f0f0;\
                 padding: 1px 2px;\
             }\
-            .card-description pre.code, .block.description pre.code {\
+            .board-card-description pre.code, .block.description pre.code {\
                 color: inherit;\
                 padding: 1px 2px;\
                 border-color: #f4f4f4;\
             }\
-            .card-description-full {\
+            .board-card-description-full {\
                 display: none;\
             }\
             .block.description .value {\

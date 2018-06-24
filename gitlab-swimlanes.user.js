@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab swimlanes
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.3
+// @version         0.5
 // @description     Add swimlanes to GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -254,7 +254,7 @@ function display_swimlanes() {
         $('.board', current_board).each(function () {
             var board = $(this);
 
-            $('.card', board).each(function () {
+            $('.card,.board-card', board).each(function () {
                 var card = $(this);
                 var keep_card = false;
 
@@ -263,7 +263,7 @@ function display_swimlanes() {
 
                 } else if (swimlane_type === "label") {
                     // Swimlanes by label categories
-                    $('.card-footer button', card).each(function () {
+                    $('.card-footer button,.board-card-footer button', card).each(function () {
                         var item = $(this);
                         var title = "";
                         if(item.prop("title")) {
@@ -294,7 +294,7 @@ function display_swimlanes() {
 
                 } else if (swimlane_type === "all") {
                     // Swimlanes by all labels
-                    $('.card-footer button', card).each(function () {
+                    $('.card-footer button,.board-card-footer button', card).each(function () {
                         var item = $(this);
                         var title = item.text().trim();
 
@@ -330,7 +330,7 @@ function display_swimlanes() {
 
                 } else if (swimlane_type === "user") {
                     // Swimlanes by users
-                    $('.card-assignee img', card).each(function () {
+                    $('.card-assignee img,.board-card-assignee img', card).each(function () {
                         var item = $(this);
                         var title = "";
                         if(item.prop("title")) {
@@ -382,7 +382,7 @@ function display_swimlanes() {
             $('.board-delete', current_board).remove();
             $('.is-expandable', current_board).removeClass('is-expandable');
             $('.user-can-drag', current_board).removeClass('user-can-drag');
-            $('.card-footer button', current_board).css({'cursor': 'default'});
+            $('.card-footer button,.board-card-footer button', current_board).css({'cursor': 'default'});
             $('ul', current_board).css({'min-height': swimlane_min_height+'px'});
             if(swimlane_max_height > -1) {
                 $('ul', current_board).css({'max-height': swimlane_max_height+'px'});

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.5
+// @version         0.5a
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -278,22 +278,24 @@ function markdown_quick_render(text) {
 
     var markdown = text;
     // html
-    markdown = markdown.replace(/</g, '&lt;');
-    markdown = markdown.replace(/>/g, '&gt;');
+    markdown = markdown.replace(/</g, '&lt;');  // <
+    markdown = markdown.replace(/>/g, '&gt;');  // >
 
     // code
-    markdown = markdown.replace(/```(\S*)\s*\n([\s\S]*)\n\s*```/g, '<pre class="code code-$1">$2</pre>');
-    markdown = markdown.replace(/`([^`]*)`/g, '<code class="code">$1</code>');
+    markdown = markdown.replace(/```(\S*)\s*\n([\s\S]*)\n\s*```/g, '<pre class="code code-$1">$2</pre>');  // ```
+    markdown = markdown.replace(/`([^`]*)`/g, '<code class="code">$1</code>');  // `
 
     // styles
-    markdown = markdown.replace(/(^|[\s,.:;]+)\*{3}([^*\n]+)\*{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');
-    markdown = markdown.replace(/(^|[\s,.:;]+)\*{2}([^*\n]+)\*{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');
-    markdown = markdown.replace(/(^|[\s,.:;]+)\*{1}([^*\n]+)\*{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{3}([^*\n]+)\*{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');  // ***
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{2}([^*\n]+)\*{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');  // **
+    markdown = markdown.replace(/(^|[\s,.:;]+)\*{1}([^*\n]+)\*{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');  // *
 
     // markdown = markdown.replace(/(^|\s+)_{1}([^_\n]+)_{1}(\s+|$)/g, '$1<span style="text-decoration: underline;">$2</span>$3');  // underline markdown is not supported in GitLab
-    markdown = markdown.replace(/(^|[\s,.:;]+)_{3}([^_\n]+)_{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');
-    markdown = markdown.replace(/(^|[\s,.:;]+)_{2}([^_\n]+)_{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');
-    markdown = markdown.replace(/(^|[\s,.:;]+)_{1}([^_\n]+)_{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{3}([^_\n]+)_{3}([\s,.:;]+|$)/g, '$1<i><b>$2</b></i>$3');  // ___
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{2}([^_\n]+)_{2}([\s,.:;]+|$)/g, '$1<b>$2</b>$3');  // __
+    markdown = markdown.replace(/(^|[\s,.:;]+)_{1}([^_\n]+)_{1}([\s,.:;]+|$)/g, '$1<i>$2</i>$3');  // _
+
+    markdown = markdown.replace(/(^|[\s,.:;]+)~{2}([^~\n]+)~{2}([\s,.:;]+|$)/g, '$1<del>$2</del>$3');  // ~~
 
     // title
     markdown = markdown.replace(/##/g, '▪▪');

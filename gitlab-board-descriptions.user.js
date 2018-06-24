@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.5a
+// @version         0.5.1
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards

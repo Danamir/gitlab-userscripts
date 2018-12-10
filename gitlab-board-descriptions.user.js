@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.6
+// @version         0.7
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -74,7 +74,7 @@ function get_issue_ids(board) {
     }
 
     var iids = [];
-    $('.card-number,.board-card-number', board).each(function () {
+    $('.board-card-number', board).each(function () {
         var id = $(this).text().trim().replace(/^#/, '');
         if ($.inArray(id, iids) === -1) {
             iids.push(id);
@@ -185,10 +185,10 @@ function display_descriptions(issues) {
     $('.boards-list').each(function () {
         var board = $(this);
 
-        $('.card,.board-card', board).each(function () {
+        $('.board-card', board).each(function () {
             var card = $(this);
-            var header = $('.card-header,.board-card-header', card);
-            var id = $('.card-number,.board-card-number', header).text().trim().replace(/^#/, '');
+            var header = $('.board-card-header', card);
+            var id = $('.board-card-number', card).text().trim().replace(/^#/, '');
 
             if(issues[id] && issues[id]['description']) {
                 var description = issues[id]['description'].trim();
@@ -214,7 +214,7 @@ function display_descriptions(issues) {
         });
     });
 
-    $('.card,.board-card').on("click", function (e) {
+    $('.board-card').on("click", function (e) {
         var card = $(this);
         var card_description = $('.board-card-description-full', card);
         var has_description = card_description.length > 0;

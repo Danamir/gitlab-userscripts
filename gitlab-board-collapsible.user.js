@@ -22,6 +22,7 @@
 
 
 // local variables
+var project_id;
 var collapsed_lists = [];
 
 /**
@@ -80,6 +81,14 @@ function getCookie(cname) {
         }
     }
     return "";
+}
+
+/**
+ * Get project id from the page.
+ * @returns {*|jQuery}
+ */
+function get_project_id() {
+    return $('#search_project_id').prop('value');
 }
 
 /**
@@ -162,16 +171,18 @@ function toggle_collapsed(title) {
             }
         }
 
-        setCookie("collapsed_lists", collapsed_lists);
+        setCookie("collapsed_lists_"+project_id, collapsed_lists);
     });
 }
 
 $(document).ready(function() {
     console.log('Loading GitLab board collapsible lists...');
 
+    project_id = get_project_id();
+
     // check collapsed lists cookie
-    if (getCookie("collapsed_lists")) {
-        collapsed_lists = getCookie("collapsed_lists").split(",");
+    if (getCookie("collapsed_lists_"+project_id)) {
+        collapsed_lists = getCookie("collapsed_lists_"+project_id).split(",");
     }
 
     setTimeout(function () {
@@ -185,6 +196,7 @@ $(document).ready(function() {
             .board.is-collapsed .board-title>span.board-title-expandable {\
                 width: unset;\
                 transform: rotate(90deg) translate(calc(50% + 15px), 0);\
+                padding-bottom: 3px;\
             }\
         </style>');
 

@@ -34,3 +34,14 @@ Userscript to display issues description preview in GitLab issues board.
 
 ##### Notes
   - Limited to the dislayed issues on first load.
+
+### gitlab-board-collapsible
+##### Description
+Userscript to make all board issues lists collapsible.
+
+##### Usage
+  - Click on the list title to collapse/expand.
+
+##### Notes
+  - The lists are still draggable if you click beside the title.
+

@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board collapsible lists
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.1
+// @version         0.2
 // @description     Make all board issues lists collapsible
 // @author          Danamir
 // @match           http*://*/*/boards

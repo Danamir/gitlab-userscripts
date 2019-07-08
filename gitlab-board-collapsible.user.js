@@ -1,22 +1,26 @@
 // ==UserScript==
 // @name            GitLab board collapsible lists
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.2
+// @version         0.3
 // @description     Make all board issues lists collapsible
 // @author          Danamir
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
-// @require         https://code.jquery.com/jquery-3.3.1.min.js
+// @require         https://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==
 
 /**
  * Userscript to make all board issues lists collapsible.
  *
  * Usage:
- *   - Click on the list title to collapse/expand.
- *
+ *   - Modifier key + Mouse over the list title to collapse/expand.
+ * 
  * Notes:
- *   - The lists are still draggable if you click beside the title.
+ *   - Ctrl, Shift or Alt can be used as modifier key.
+ *
+ * Issues:
+ *   - The draggable board state prevent the simple click from functionning.
+ * 
  */
 // configuration
 
@@ -115,7 +119,7 @@ function alter_lists() {
         var arrow = '<i aria-hidden="true" class="fa fa-fw board-title-expandable-toggle fa-caret-down expandable-arrow" title="'+title+'"></i>';
         board_title.before(arrow);
 
-        // toggle actions
+        // toggle click actions
         $('.board-title-expandable-toggle', list).on("click", function (e) {
             var title = $(this).attr("title");
             toggle_collapsed(title);
@@ -124,6 +128,21 @@ function alter_lists() {
         board_title.on("click", function (e) {
             var title = $(this).text().trim();
             toggle_collapsed(title);
+        });
+        
+        // toggle hover actions
+        $('.board-title-expandable-toggle', list).on("mouseenter", function (e) {
+            if (e.ctrlKey || e.shiftKey || e.altKey) {
+                var title = $(this).attr("title");
+                toggle_collapsed(title);
+            }
+        });
+        
+        board_title.on("mouseenter", function (e) {
+            if (e.ctrlKey || e.shiftKey || e.altKey) {
+                var title = $(this).text().trim();
+                toggle_collapsed(title);
+            }
         });
 
         // auto-collapse previously collapsed lists
@@ -156,6 +175,13 @@ function toggle_collapsed(title) {
 
         // toggle collapsed state
         list.toggleClass("is-collapsed");
+        $('header', list).toggleClass('position-relative position-absolute position-top-0 position-left-0 w-100 h-100');
+        $('header h3', list).toggleClass('p-0 border-bottom-0 justify-content-center');
+        $('button', list).toggleClass('d-none');
+        $('.issue-count-badge', list).toggleClass('d-none');
+        $('.board-list-count', list).toggleClass('d-none');
+        $('.board-list-component', list).toggleClass('d-flex flex-column d-none');
+        $('.board-title-expandable-toggle', list).toggleClass('fa-caret-down fa-caret-right');
 
         // update collapsed lists cookie
         if (list.hasClass("is-collapsed")) {
@@ -177,7 +203,7 @@ function toggle_collapsed(title) {
 
 $(document).ready(function() {
     console.log('Loading GitLab board collapsible lists...');
-
+    
     project_id = get_project_id();
 
     // check collapsed lists cookie

@@ -263,7 +263,7 @@ function display_swimlanes() {
 
                 } else if (swimlane_type === "label") {
                     // Swimlanes by label categories
-                    $('.card-footer button,.board-card-footer button', card).each(function () {
+                    $('.board-card-labels button, .card-footer button, .board-card-footer button', card).each(function () {
                         var item = $(this);
                         var title = "";
                         if(item.prop("title")) {
@@ -294,7 +294,7 @@ function display_swimlanes() {
 
                 } else if (swimlane_type === "all") {
                     // Swimlanes by all labels
-                    $('.card-footer button,.board-card-footer button', card).each(function () {
+                    $('.board-card-labels button, .card-footer button, .board-card-footer button', card).each(function () {
                         var item = $(this);
                         var title = item.text().trim();
 
@@ -333,14 +333,18 @@ function display_swimlanes() {
                     $('.card-assignee img,.board-card-assignee img', card).each(function () {
                         var item = $(this);
                         var title = "";
-                        if(item.prop("title")) {
+                        if(item.prop("alt")) {
+                            title = item.prop("alt");
+                        } else if(item.prop("title")) {
                             title = item.prop("title");
                         } else if (item.attr("data-original-title")) {
                             title = item.attr("data-original-title");
                         }
 
+                        console.log("Avatar title "+title);
+
                         if (title) {
-                            var match = /^Assi\S* \S+ (.*)$/.exec(title);
+                            var match = /^Avatar for (.*)$/.exec(title);
 
                             if (!match) {
                                 // not a swimline title
@@ -382,7 +386,7 @@ function display_swimlanes() {
             $('.board-delete', current_board).remove();
             $('.is-expandable', current_board).removeClass('is-expandable');
             $('.user-can-drag', current_board).removeClass('user-can-drag');
-            $('.card-footer button,.board-card-footer button', current_board).css({'cursor': 'default'});
+            $('.board-card-labels button, .card-footer button, .board-card-footer button', current_board).css({'cursor': 'default'});
             $('ul', current_board).css({'min-height': swimlane_min_height+'px'});
             if(swimlane_max_height > -1) {
                 $('ul', current_board).css({'max-height': swimlane_max_height+'px'});
@@ -399,7 +403,7 @@ function display_swimlanes() {
             } else if (swimlane_type === "all") {
                 title = current_swimlane_title;
             } else if (swimlane_type === "user") {
-                var title = /^Assi\S* \S+ (.*)$/.exec(current_swimlane_title);
+                var title = /^Avatar for (.*)$/.exec(current_swimlane_title);
                 title = title[1];
             }
 

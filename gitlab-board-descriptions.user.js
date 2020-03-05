@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab board descriptions
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.8
+// @version         0.9
 // @description     Display issues description in GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -373,6 +373,7 @@ $(document).ready(function() {
         btn.text("");
         btn.append('<i class="fa fa-align-left"></i>');
 
+        $('.board-extra-actions').css("white-space", "nowrap");
         $('.board-extra-actions').append(btn);
 
         // first load

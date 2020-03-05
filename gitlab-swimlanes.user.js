@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab swimlanes
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.7
+// @version         0.8
 // @description     Add swimlanes to GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards
@@ -471,6 +471,7 @@ $(document).ready(function() {
         btn.attr("title", tooltip);
         btn.text("Swimlanes");
 
+        $('.board-extra-actions').css("white-space", "nowrap");
         $('.board-extra-actions').append(btn);
 
         $('.btn-display-swimlanes').on("click", function (e) {

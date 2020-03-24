@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name            GitLab swimlanes
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.8
+// @version         0.9
 // @description     Add swimlanes to GiLab issues board
 // @author          Danamir
 // @match           http*://*/*/boards

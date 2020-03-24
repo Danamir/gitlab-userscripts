@@ -455,6 +455,10 @@ $(document).ready(function() {
     console.log('Loading GitLab swimlanes...');
 
     setTimeout(function () {
+        // styles
+        $('.boards-list').css("overflow-x", "auto");
+
+        // button
         var btn = $('<button type="button" class="btn btn-create prepend-left-10"></button>');
         var tooltip = '<span style="white-space: nowrap;">Toggle swimlanes</span>';
         if (swimlane_types.length >= 2) {

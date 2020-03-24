@@ -318,6 +318,8 @@ $(document).ready(function() {
         project_id = get_project_id();
 
         // styles
+        $('.boards-list').css("overflow-x", "auto");
+
         $('head').append('\
         <style type="text/css">\
             .board-card-body {\

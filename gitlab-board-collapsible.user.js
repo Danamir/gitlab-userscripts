@@ -1,16 +1,18 @@
 // ==UserScript==
 // @name            GitLab board collapsible lists
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.3
-// @description     Make all board issues lists collapsible
+// @version         0.3.1
+// @description     Make all board issues lists collapsible. Deprecated, functionality now available without userscript.
 // @author          Danamir
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
+// @match           http*://*/*/boards/*
 // @require         https://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==
 
 /**
  * Userscript to make all board issues lists collapsible.
+ * Deprecated: This functionality is now directly available in GitLab CE.
  *
  * Usage:
  *   - Modifier key + Mouse over the list title to collapse/expand.

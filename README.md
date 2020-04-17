@@ -1,15 +1,25 @@
 # gitlab-userscripts
 GitLab UserScripts to enhance usability:
-  - Issues board Swimlanes
   - Issues board descriptions preview
   
 The scripts can be auto-loaded with [Tampermonkey](http://tampermonkey.net/) browser addon, or equivalent, by clicking the *Raw* button on any `.user.js` file in the repository.
 
 [Screenshots](SCREENS.md)
 
-### gitlab-swimlanes
+### gitlab-board-descriptions
 ##### Description
-Userscript to display swimlanes in GitLab issues board.
+Userscript to display issues description preview in GitLab issues board.
+
+##### Usage
+  - Click the descriptions button to toggle the display.
+
+##### Notes
+  - Limited to the dislayed issues on first load.
+
+### ~~gitlab-swimlanes~~ (deprecated)
+##### Description
+~~Userscript to display swimlanes in GitLab issues board.~~  
+_Deprecated_: It was a proof of concept and is not fully compatible with the new GitLab CSS. Only the User mode is working, via `Ctrl+click`. 
 
 ##### Usage
   - Append "--" or "-Category name-" to the label descriptions you want to use as category.
@@ -25,19 +35,10 @@ Userscript to display swimlanes in GitLab issues board.
 ##### Notes
   - All interactions are disabled in the swimlanes, but still available in the main board.
 
-### gitlab-board-descriptions
+### ~~gitlab-board-collapsible~~ (deprecated)
 ##### Description
-Userscript to display issues description preview in GitLab issues board.
-
-##### Usage
-  - Click the descriptions button to toggle the display.
-
-##### Notes
-  - Limited to the dislayed issues on first load.
-
-### gitlab-board-collapsible
-##### Description
-Userscript to make all board issues lists collapsible.
+~~Userscript to make all board issues lists collapsible.~~  
+_Deprecated_: This functionality is now directly available in GitLab CE.
 
 ##### Usage
   - Click on the list title to collapse/expand.

@@ -1,16 +1,18 @@
 // ==UserScript==
-// @name            GitLab swimlanes
+// @name            GitLab swimlanes (deprecated)
 // @namespace       https://github.com/Danamir/gitlab-userscripts/
-// @version         0.9
-// @description     Add swimlanes to GiLab issues board
+// @version         0.9.1
+// @description     Add swimlanes to GiLab issues board. Deprecated proof of concept.
 // @author          Danamir
 // @match           http*://*/*/boards
 // @match           http*://*/*/boards?*
+// @match           http*://*/*/boards/*
 // @require         https://code.jquery.com/jquery-3.4.1.min.js
 // ==/UserScript==
 
 /**
  * Userscript to display swimlanes in Gitlab issues board.
+ * Deprecated: It was a proof of concept and is not fully compatible with the new GitLab CSS. Only the User mode is working, via Ctrl+click.
  *
  * Usage:
  *   - Append "--" or "-Category name-" to the label descriptions you want to use as swimlanes.

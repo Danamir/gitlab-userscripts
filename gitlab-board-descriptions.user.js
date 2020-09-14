@@ -362,9 +362,8 @@ $(document).ready(function() {
                 white-space: pre-wrap;\
             }\
         </style>');
-
         // descriptions button
-        var btn = $('<button type="button" class="btn btn-create prepend-left-10"></button>');
+        var btn = $('<button type="button" class="btn btn-create gl-ml-3"></button>');
         var tooltip = '<span style="white-space: nowrap">Toggle descriptions</span>';
         tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap">Ctrl : Refresh descriptions</span>';
 
@@ -374,10 +373,10 @@ $(document).ready(function() {
         btn.attr("title", tooltip);
         btn.attr("aria-pressed", "true");
         btn.text("");
-        btn.append('<i class="fa fa-align-left"></i>');
-
+        btn.append('<svg class="s16" data-testid="doc-text-icon"><use xlink:href="/assets/icons-81bca028cfa382a852fa2c8a6dfb4fb2b7467093d38f9fe9a07a519ca785299c.svg#doc-text"></use></svg>');
+        
         $('.board-extra-actions').css("white-space", "nowrap");
-        $('.board-extra-actions').append(btn);
+        $('.board-extra-actions').first().append(btn);
 
         // first load
         refresh_descriptions();

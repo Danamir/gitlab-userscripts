@@ -363,7 +363,7 @@ $(document).ready(function() {
             }\
         </style>');
         // descriptions button
-        var btn = $('<button type="button" class="btn btn-create gl-ml-3"></button>');
+        var btn = $('<button type="button" class="btn btn-default gl-ml-3"></button>');
         var tooltip = '<span style="white-space: nowrap">Toggle descriptions</span>';
         tooltip += '<br><span style="font-size: 0.85em; white-space: nowrap">Ctrl : Refresh descriptions</span>';
 
@@ -371,7 +371,7 @@ $(document).ready(function() {
         btn.attr("data-toggle", "button");
         btn.attr("data-html", "true");
         btn.attr("title", tooltip);
-        btn.attr("aria-pressed", "true");
+        btn.attr("description-active", "true");
         btn.text("");
         btn.append('<svg class="s16" data-testid="doc-text-icon"><use xlink:href="/assets/icons-81bca028cfa382a852fa2c8a6dfb4fb2b7467093d38f9fe9a07a519ca785299c.svg#doc-text"></use></svg>');
         
@@ -384,14 +384,18 @@ $(document).ready(function() {
         $('.btn-display-board-descriptions').on("click", function (e) {
             if (e && e.ctrlKey) {
                 // always toggle
-                btn.attr("aria-pressed", "false");
+                btn.attr("description-active", "false");
                 btn.removeClass('active');
             }
 
-            if(btn.attr("aria-pressed") === "false") {
+            if(btn.attr("description-active") === "false") {
                 // $('.btn-display-board-descriptions').addClass("disabled");
+                btn.attr("description-active", "true");
+                btn.removeClass('active');
                 refresh_descriptions();
             } else {
+                btn.attr("description-active", "false");
+                btn.addClass('active');
                 hide_descriptions();
             }
         });
